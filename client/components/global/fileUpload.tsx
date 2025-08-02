@@ -7,12 +7,22 @@ const FileUploadComponent: React.FC = () => {
     const el = document.createElement("input");
     el.setAttribute("type", "file");
     el.setAttribute("accept", "application/pdf");
-    el.addEventListener('change', (e) => {
-        if (el.files && el.files.length > 0) {
-            const file = el.files.item(0);
-            
+    el.addEventListener("change", async (e) => {
+      if (el.files && el.files.length > 0) {
+        const file = el.files.item(0);
+        if (file) {
+          const formData = new FormData();
+          formData.append("pdf", file);
+
+          fetch("http://localhost:8000/upload/pdf", {
+            method: "POST",
+            body: formData,
+          });
+
+          console.log("File Uploaded");
         }
-    } )
+      }
+    });
     el.click();
   };
 
